@@ -87,7 +87,7 @@ def job_function2():
     data = r.json()
     records = data['records']
     for item in records:
-        if item['County']=='高雄市' and item['SiteName']=='鳳山':
+        if item['County']=='新竹市' and item['SiteName']=='新竹':
             send_line('%s>> AQI=%s' %(item['SiteName'], item['AQI']))
 
 def start_scheduler():
