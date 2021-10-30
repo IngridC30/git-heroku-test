@@ -106,7 +106,6 @@ def job_function3():
 
     # test_table : TABLE 名稱 - 測試 INGRID_table
     resultProxy = my_db.execute("CREATE TABLE IF NOT EXISTS INGRID_1030_AIR_TABLE(uuid text NOT NULL, time text NOT NULL, aqi text, pm25 text)")
-    resultProxy.__dict__
 
     #政府空汙資訊
     url = 'https://data.epa.gov.tw/api/v1/aqx_p_432?format=json&api_key=9be7b239-557b-4c10-9775-78cadfc555e9'
@@ -123,20 +122,26 @@ def job_function3():
     for item in records:
         #if item['County'] == '基隆市' and item['SiteName'] == '基隆':
         if item['County'] == '屏東縣':
-        my_time = time.strftime("%Y-%m-%d %H:%M:%S")
-        uuid = item['County'] + '-'+ item['SiteName']
-        pub_time = item['PublishTime']
-        aqi = item['AQI']
-        pm25 = item['PM2.5']  
-        print(uuid)
-        resultProxy=my_db.execute("insert into INGRID_1030_AIR_TABLE (uuid, time, aqi, pm25) values('%s', '%s', '%s', '%s')" %(uuid, pub_time, aqi, pm25))
+            my_time = time.strftime("%Y-%m-%d %H:%M:%S")
+            uuid = item['County'] + '-'+ item['SiteName']
+            pub_time = item['PublishTime']
+            aqi = item['AQI']
+            pm25 = item['PM2.5']  
+            print(uuid)
+            resultProxy=my_db.execute("insert into INGRID_1030_AIR_TABLE (uuid, time, aqi, pm25) values('%s', '%s', '%s', '%s')" %(uuid, pub_time, aqi, pm25))
+            
+    # get data from db
+    resultProxy=my_db.execute("select * from your_table")
+    data = resultProxy.fetchall()
+    print('-- data --')
+    print(data)            
 
 
 def start_scheduler():
     scheduler = BackgroundScheduler()
 
     # run every 10 minute
-    #scheduler.add_job(job_wakeup, 'cron', minute='*/10')
+    scheduler.add_job(job_wakeup, 'cron', minute='*/10')
 
     # 每天早上6:30執行
     #scheduler.add_job(job_function2, 'cron', hour='6', minute='30')
@@ -144,10 +149,10 @@ def start_scheduler():
     scheduler.add_job(job_function2, 'cron', minute='*/1')
     
     # 每天15:30執行 - 注意 Heroku 時差設定
-    scheduler.add_job(job_function2, 'cron', hour='15', minute='30')    
+    scheduler.add_job(job_function2, 'cron', hour='16', minute='30')    
 
     # every 20 minute執行
-    #scheduler.add_job(job_function3, 'cron', minute='*/20')      
+    scheduler.add_job(job_function3, 'cron', minute='*/20')      
 
     # start the scheduler
     scheduler.start()
