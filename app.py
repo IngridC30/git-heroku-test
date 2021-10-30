@@ -71,7 +71,8 @@ def map_w01_6():
 #####################
 def job_wakeup():
     print('cron fun1: awake myself')
-    url = 'https://malo-cron2.herokuapp.com/'
+    #url = 'https://malo-cron2.herokuapp.com/'
+    url = 'https://git-heroku-test10.herokuapp.com/'
     r = requests.get(url)
     print(r)
 
