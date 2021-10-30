@@ -146,7 +146,7 @@ def start_scheduler():
     # 每天早上6:30執行
     #scheduler.add_job(job_function2, 'cron', hour='6', minute='30')
     # 每分鐘
-    scheduler.add_job(job_function2, 'cron', minute='*/1')
+    #scheduler.add_job(job_function2, 'cron', minute='*/1')
     
     # 每天15:30執行 - 注意 Heroku 時差設定
     scheduler.add_job(job_function2, 'cron', hour='16', minute='30')    
